@@ -39,7 +39,7 @@ huggingface-cli download Qwen/Qwen2.5-Math-PRM-7B \
 ```
 
 ### 在服务器B上启动vllm服务
-在服务器B的命令行输入启动vllm服务命令，将${your_Qwen2.5-Math-PRM-7B_path}替换为您下载的Qwen2.5-Math-PRM-7B模型路径，部署服务的IP地址需要获取（）端口号自行设置（我们以8034为例部署服务），设置完请到服务器A中的Process_Verification/verl/utils/prm/rm_call.py中把 api_url = f"http://localhost:8034/pooling" 这条语句中的localhost改为服务器B的IPV4地址；8034改为修改后的端口号
+在服务器B的命令行输入启动vllm服务命令，将${your_Qwen2.5-Math-PRM-7B_path}替换为您下载的Qwen2.5-Math-PRM-7B模型路径，部署服务的IP地址需要获取（利用hostname -I命令即可输出本机IPV4地址），端口号自行设置（我们以8034为例部署服务），设置完请到服务器A中的Process_Verification/verl/utils/prm/rm_call.py中把 api_url = f"http://localhost:8034/pooling" 这条语句中的localhost改为服务器B的IPV4地址；8034改为修改后的端口号
 
 单卡：
 ```bash

@@ -21,6 +21,8 @@ from verl.utils.reward_score import default_compute_score
 from verl.workers.reward_manager import register
 from verl.utils.prm import RemoteRewardModelConfig, RMRemoteCaller
 import functools
+import json
+import os
 
 def add_tags(response_text, split_step_token_lst):
 
@@ -235,6 +237,7 @@ class NaiveRewardManager:
             # decode
             prompt_str = self.tokenizer.decode(valid_prompt_ids, skip_special_tokens=True)
             response_str = self.tokenizer.decode(valid_response_ids, skip_special_tokens=True)
+            response_str = add_tags(response_str, ["\n\n"])
             prompt_response_str_lst.append((prompt_str, response_str))
 
         prm_step_tag="\n\n"
@@ -303,6 +306,21 @@ class NaiveRewardManager:
                         print(f"[{key}]", value)
                 else:
                     print("[score]", score)
+            
+            # save jsonl log
+            log_dict = {
+                "prompt": prompt_str,
+                "response": response_str,
+                "ground_truth": ground_truth,
+                "score": score,
+                "outcome_score": float(correct_or_not),
+                "step_accuracy": step_accuracy,
+                "process_rewards": step_correctness_lst
+            }
+            os.makedirs(os.path.dirname("Process_Verification/output_log.jsonl"), exist_ok=True)
+            with open(file_path, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(log_dict, ensure_ascii=False) + '\n')
+
 
         if return_dict:
             return {
