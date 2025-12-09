@@ -51,7 +51,8 @@ done
 
 # Default model path if not specified
 MODEL_PATH=${MODEL_PATH:-"deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"}
-#MODEL_PATH="/mnt/luoyingfeng/model_card/DeepSeek-R1-Distill-Qwen-1.5B"
+project_name='ALP'
+experiment_name='alp_disprm_1.5B_4k_1e-7'
 
 # Train over a single node, 8 A100-80GB GPUs.
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python3 -m verl.trainer.main_ppo \
@@ -93,17 +94,17 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python3 -m verl.trainer.main_ppo \
     +custom_reward_function.kwargs.prm_threshold=0.8 \
     trainer.critic_warmup=0 \
     trainer.logger=['console'] \
-    trainer.project_name='ALP' \
-    trainer.experiment_name='alp_disprm_1.5B_4k_1e-7' \
+    trainer.project_name=${project_name} \
+    trainer.experiment_name=${experiment_name} \
     ++trainer.val_before_train=False \
     trainer.n_gpus_per_node=8 \
     trainer.nnodes=1 \
     trainer.save_freq=10 \
-    trainer.test_freq=10 \
+    trainer.test_freq=-1 \
     trainer.default_hdfs_dir=null \
     actor_rollout_ref.actor.checkpoint.save_contents=['hf_model'] \
     trainer.total_epochs=1 "${@:1}" \
-    trainer.total_training_steps=100
+    trainer.total_training_steps=100 > $ROOT_DIR/checkpoints/${project_name}/${experiment_name}.log
 
 # Notes on the training cofig:
 
