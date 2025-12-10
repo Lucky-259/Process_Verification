@@ -51,8 +51,8 @@ done
 
 # Default model path if not specified
 MODEL_PATH=${MODEL_PATH:-"deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"}
-project_name='ALP'
-experiment_name='alp_disprm_1.5B_4k_1e-7'
+PROJECT_NAME='ALP'
+EXPERIMENT_NAME='alp_disprm_1.5B_16k_1e-7'
 
 # Train over a single node, 8 A100-80GB GPUs.
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python3 -m verl.trainer.main_ppo \
@@ -61,8 +61,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python3 -m verl.trainer.main_ppo \
     data.val_files=${DATASET_DIR}/aime.parquet \
     data.train_batch_size=128 \
     data.val_batch_size=512 \
-    data.max_prompt_length=2048 \
-    data.max_response_length=4096 \
+    data.max_prompt_length=4096 \
+    data.max_response_length=16384 \
     actor_rollout_ref.model.path=$MODEL_PATH \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
@@ -94,8 +94,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python3 -m verl.trainer.main_ppo \
     +custom_reward_function.kwargs.prm_threshold=0.8 \
     trainer.critic_warmup=0 \
     trainer.logger=['console'] \
-    trainer.project_name=${project_name} \
-    trainer.experiment_name=${experiment_name} \
+    trainer.project_name=${PROJECT_NAME} \
+    trainer.experiment_name=${EXPERIMENT_NAME} \
     ++trainer.val_before_train=False \
     trainer.n_gpus_per_node=8 \
     trainer.nnodes=1 \

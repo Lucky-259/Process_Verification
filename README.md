@@ -56,3 +56,15 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve ${your_Qwen2.5-Math-PRM-7B_path} --task 
 ```bash
 bash verl/prm/discriminative_prm/rl_disprm_1.5B.sh --model ${your_DeepSeek-R1-Distill-Qwen-1.5B_path}
 ```
+
+
+### 评估
+启动vllm服务进行评估，在eval目录下运行
+- vllm_all.sh脚本用于测试整个项目的所有checkpoint文件
+  - 汇总后的结果保存在Process_Verification/eval/eval_results的all_checkpoints_summary.csv中。
+  - 需要修改vllm_all.sh前面的若干变量，指向需要评估的checkpoint文件夹、启动vllm服务的环境名（用于kill服务）
+  - 运行命令中第1个参数为Process_Verification/deepscaler/data/test/路径下的数据集名称，第2个参数为pass@N中的N，第3个参数为总并发数。
+    ```bash
+    bash vllm_all.sh aime 64 150
+    ```
+- vllm_one.sh脚本用于测试单个checkpoint文件，使用方式同上

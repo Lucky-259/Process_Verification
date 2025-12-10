@@ -48,7 +48,6 @@ class RewardInput:
     model_response: str
     problem_type: RewardType = RewardType.UNK
     ground_truth: dict = field(default_factory=dict)
-    num_tokens: int = -1
 
 
 @dataclass
