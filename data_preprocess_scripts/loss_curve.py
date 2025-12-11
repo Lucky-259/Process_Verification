@@ -1,6 +1,7 @@
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
 
 def extract_losses(log_file_path):
     """
@@ -125,7 +126,11 @@ def plot_loss_curve(losses, save_path=None):
 # 主程序
 if __name__ == "__main__":
     # 设置你的.log文件路径
-    log_file_path = "checkpoints/ALP/alp_genprm_1.5B_debug.log"  # 修改为你的.log文件路径
+    parser = argparse.ArgumentParser(description="统计loss")
+    parser.add_argument('--log', type=str, required=True, help="log路径")
+    args = parser.parse_args()
+
+    log_file_path = args.log
     
     # 提取loss值
     losses = extract_losses(log_file_path)
