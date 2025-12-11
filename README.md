@@ -59,6 +59,7 @@ bash verl/prm/discriminative_prm/rl_disprm_1.5B.sh --model ${your_DeepSeek-R1-Di
 
 
 ### 评估
+#### 准确率
 启动vllm服务进行评估，在eval目录下运行
 - vllm_all.sh脚本用于测试整个项目的所有checkpoint文件
   - 汇总后的结果保存在Process_Verification/eval/eval_results的all_checkpoints_summary.csv中。
@@ -68,3 +69,13 @@ bash verl/prm/discriminative_prm/rl_disprm_1.5B.sh --model ${your_DeepSeek-R1-Di
     bash vllm_all.sh aime 64 150
     ```
 - vllm_one.sh脚本用于测试单个checkpoint文件，使用方式同上
+
+#### 长度
+在Process_Verification/eval目录下运行脚本
+- length_summary.sh用于测试某个实验的所有checkpoint文件
+  - length_summary.sh需要两个参数，第一个参数${YOUR_EXPERIMENT_DIR_NAME}是要评估的实验文件夹名（在Process_Verification/eval/eval_results下的某个文件夹，如alp_disprm_1.5B_4k_1e-7），第二个参数${YOUR_MODEL_PATH}是加载tokenizer用到的模型路径（由于训练的模型均源自DeepSeek-R1-Distill-Qwen-1.5B，所以可以用DeepSeek-R1-Distill-Qwen-1.5B的模型路径），如：bash length_summary.sh alp_disprm_1.5B_4k_1e-7 /path/to/your/DeepSeek-R1-Distill-Qwen-1.5B
+  - 汇总后的结果保存在Process_Verification/eval/eval_results的指定的实验文件夹中的all_checkpoints_length_summary.csv中
+    ```bash
+    bash length_summary.sh ${YOUR_EXPERIMENT_DIR_NAME} ${YOUR_MODEL_PATH}
+    ```
+- length_calculation.py用于测试单个文件
